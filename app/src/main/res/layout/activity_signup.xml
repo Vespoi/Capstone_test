@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="150dp"
+            android:layout_height="47dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="121dp"
+            android:layout_marginTop="51dp"
+            android:gravity="center"
+            android:text="회원가입"
+            android:textSize="15pt" />
+
+        <!--이메일 시작-->
+        <TextView
+            android:id="@+id/textview2"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="145dp"
+            android:gravity="left"
+            android:text="이메일"
+            android:textSize="11pt" />
+
+        <EditText
+            android:id="@+id/signup_emailInput"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="180dp"
+            android:autofillHints="이메일"
+            android:hint="이메일을 입력해 주십시오" />
+        <!--이메일 끝-->
+
+        <!--비밀번호 시작-->
+        <TextView
+            android:id="@+id/textview3"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="235dp"
+            android:gravity="left"
+            android:text="비밀번호"
+            android:textSize="11pt" />
+
+        <EditText
+            android:id="@+id/signup_passwordInput"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="268dp"
+            android:autofillHints="비밀번호"
+            android:hint="비밀번호를 입력해 주십시오" />
+        <!--비밀번호 끝-->
+
+        <!--비밀번호확인 시작-->
+
+        <TextView
+            android:id="@+id/textview4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="322dp"
+            android:gravity="left"
+            android:text="비밀번호확인"
+            android:textSize="11pt" />
+
+        <EditText
+            android:id="@+id/signup_password_checkInput"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="357dp"
+            android:autofillHints="비밀번호"
+            android:hint="비밀번호를 한번 더 입력해 주십시오" />
+        <!--비밀번호확인 끝-->
+
+        <!--전화번호 시작-->
+
+        <TextView
+            android:id="@+id/textview5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="409dp"
+            android:gravity="left"
+            android:text="전화번호"
+            android:textSize="11pt" />
+
+        <EditText
+            android:id="@+id/signup_phone_numberInput"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="443dp"
+            android:autofillHints="비밀번호"
+            android:hint="전화번호를 입력해 주십시오" />
+        <!--전화번호 끝-->
+
+        <Button
+            android:id="@+id/signupButton"
+            android:layout_width="150dp"
+            android:layout_height="55dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="577dp"
+            android:text="회원가입"
+            android:textAllCaps="false" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

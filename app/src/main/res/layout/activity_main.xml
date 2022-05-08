@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="메뉴" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="searchsearchsearchsearchsearch"
+                android:completionThreshold="1" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <com.naver.maps.map.MapView
+                    android:id="@+id/map_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </com.naver.maps.map.MapView>
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/menuView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top|left"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <Button
+                        android:id="@+id/buttonMenuContentMyinfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="내정보" />
+
+                    <Button
+                        android:id="@+id/buttonMenuContentRq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="정보수정요청" />
+
+                    <Button
+                        android:id="@+id/buttonMenuContentAnnouncement"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="공지사항" />
+
+                    <Button
+                        android:id="@+id/buttonMenuContentSettings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="설정" />
+
+                    <Button
+                        android:id="@+id/buttonMenuContentCS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="고객센터" />
+
+
+                    <Button
+                        android:id="@+id/buttonMenuContentClose"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="닫기" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <ScrollView
+                android:id="@+id/ViewM1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:visibility="gone"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/binLocation1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="test trash bin1" />
+
+                        <TextView
+                            android:id="@+id/binStorage1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="남은 용량: ##%" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/binDetails1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="세부정보" />
+
+                    <Button
+                        android:id="@+id/button3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="압축" />
+
+                    <Button
+                        android:id="@+id/buttonClose1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="닫기" />
+
+                </LinearLayout>
+            </ScrollView>
+
+            <ScrollView
+                android:id="@+id/ViewM2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:visibility="gone"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/binLocation2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="test trash bin2" />
+
+                        <TextView
+                            android:id="@+id/binStorage2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="남은 용량: ##%" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/binDetails2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="세부정보" />
+
+                    <Button
+                        android:id="@+id/button7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="압축" />
+
+                    <Button
+                        android:id="@+id/buttonClose2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="닫기" />
+                </LinearLayout>
+            </ScrollView>
+
+            <ScrollView
+                android:id="@+id/ViewM3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:visibility="gone"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/binLocation3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="test trash bin3" />
+
+                        <TextView
+                            android:id="@+id/binStorage3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="남은 용량: ##%" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/binDetails3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="세부정보" />
+
+                    <Button
+                        android:id="@+id/button4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="압축" />
+
+                    <Button
+                        android:id="@+id/buttonClose3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="닫기" />
+                </LinearLayout>
+            </ScrollView>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
