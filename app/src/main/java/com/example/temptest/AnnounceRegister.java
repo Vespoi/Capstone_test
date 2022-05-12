@@ -1,5 +1,6 @@
 package com.example.temptest;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,124 +30,63 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 public class AnnounceRegister extends AppCompatActivity {
-    //로그에 사용할 TAG 변수 선언
-    final private String TAG = getClass().getSimpleName();
-
-    // 사용할 컴포넌트 선언
-    EditText title_et, content_et;
-    Button btnReg;
-
-    // 유저아이디 변수
-    String userid = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_announce_register);
 
-        // ListActivity 에서 넘긴 userid 를 변수로 받음
-        userid = getIntent().getStringExtra("userid");
-        // 컴포넌트 초기화
-        title_et = findViewById(R.id.editTitle);
-        content_et = findViewById(R.id.editContent);
-        btnReg = findViewById(R.id.buttonRegister);
+        EditText title_et = (EditText) findViewById(R.id.editTitle);
+        EditText content_et = (EditText) findViewById(R.id.editContent);
+        Button btnReg = (Button) findViewById(R.id.buttonRegister);
 
         btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 게시물 등록 함수
-                RegBoard regBoard = new RegBoard();
-                regBoard.execute(userid, title_et.getText().toString(), content_et.getText().toString());
 
-                Toast.makeText(getApplicationContext(), "개발중 입니다.", Toast.LENGTH_SHORT).show();
+                String title = title_et.getText().toString();
+                String content = content_et.getText().toString();
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try
+                        {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+
+                            if (success)
+                            {
+                                Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+
+                            else
+                            {
+                                Toast.makeText(getApplicationContext(), "실패", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+
+                        catch(JSONException e)
+                        {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "예외 1", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                AnnRegRequestActivity annRegRequestActivity = new AnnRegRequestActivity(title, content, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                queue.add(annRegRequestActivity);
+
             }
         });
-
     }
-
-    class RegBoard extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            Log.d(TAG, "onPreExecute");
-        }
-
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            Log.d(TAG, "onPostExecute, " + result);
-
-            if (result.equals("success")) {
-// 결과값이 success 이면
-// 토스트 메시지를 뿌리고
-// 이전 액티비티(ListActivity)로 이동,
-// 이때 ListActivity 의 onResume() 함수 가 호출되며, 데이터를 새로 고침
-                Toast.makeText(AnnounceRegister.this, "등록되었습니다.", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                Toast.makeText(AnnounceRegister.this, result, Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            String userid = params[0];
-            String title = params[1];
-            String content = params[2];
-
-            String server_url = "http://15.164.252.136/reg_board.php"; //수정 필요
-
-
-            URL url;
-            String response = "";
-            try {
-                url = new URL(server_url);
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("userid", userid)
-                        .appendQueryParameter("title", title)
-                        .appendQueryParameter("content", content);
-                String query = builder.build().getEncodedQuery();
-
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
-                writer.flush();
-                writer.close();
-                os.close();
-
-                conn.connect();
-                int responseCode = conn.getResponseCode();
-
-                if (responseCode == HttpsURLConnection.HTTP_OK) {
-                    String line;
-                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    while ((line = br.readLine()) != null) {
-                        response += line;
-                    }
-                } else {
-                    response = "";
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return response;
-        }
-    }
-
 }
+
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,12 @@ public class announce_adapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;
+        View v = View.inflate(context, R.layout.ann_list_item, null);
+        TextView title = (TextView)v.findViewById(R.id.title);
+        TextView board_num = (TextView)v.findViewById(R.id.board_num);
+
+        title.setText(list_itemArrayList.get(i).getTitle());
+        board_num.setText(list_itemArrayList.get(i).getBoard_num());
+        return v;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.temptest;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -10,9 +12,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,57 +33,50 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class AnnouncementActivity extends AppCompatActivity {
+    private static String TAG = "phptest_MainActivity";
+    private static final String TAG_JSON="webnautes";
+    private static final String TAG_TITLE = "title";
+    private static final String TAG_BOARD_NUM = "board_num";
+    private TextView mTextViewResult;
 
-    // 로그에 사용할 TAG 변수
-    final private String TAG = getClass().getSimpleName();
-
-    // 사용할 컴포넌트 선언
-    String userid = "";
+    ArrayList<HashMap<String, String>> annList;
+    announce_adapter adapter;
     ListView listView;
 
-    // 리스트뷰에 사용할 제목 배열
-    ArrayList<String> titleList = new ArrayList<>();
-
-    // 클릭했을 때 어떤 게시물을 클릭했는지 게시물 번호를 담기 위한 배열
-    ArrayList<String> seqList = new ArrayList<>();
-
-
+    String mJsonString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_announcement);
 
+        mTextViewResult = (TextView)findViewById(R.id.mTextViewResult);
+
+        annList = new ArrayList<>();
+
+
+        listView = (ListView) findViewById(R.id.announceList);
         Button btnReg = findViewById(R.id.buttonWrite);
-        listView = findViewById(R.id.announceList);
 
-        userid ="테스트용 임시저장";
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(AnnouncementActivity.this, AnnounceDetail.class);
-                intent.putExtra("board_seq", seqList.get(i));
-                intent.putExtra("userid", userid);
-                startActivity(intent);
-            }
-        });
+        GetData task = new GetData();
+        task.execute("http://10.0.2.2/TestThings/cap_test/annLoadBoard.php");
 
         btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AnnouncementActivity.this, AnnounceRegister.class);
-                intent.putExtra("userid", userid);
                 startActivity(intent);
             }
         });
@@ -82,125 +88,129 @@ public class AnnouncementActivity extends AppCompatActivity {
                 finish();
             }
         });
+
     }
-
-
-
-    // onResume() 은 해당 액티비티가 화면에 나타날 때 호출됨
-    @Override
-    protected void onResume() {
-        super.onResume();
-// 해당 액티비티가 활성화 될 때, 게시물 리스트를 불러오는 함수를 호출
-        GetBoard getBoard = new GetBoard();
-        getBoard.execute();
-    }
-
-
-    // 게시물 리스트를 읽어오는 함수
-    class GetBoard extends AsyncTask<String, Void, String> {
+    private class GetData extends AsyncTask<String, Void, String>{
+        ProgressDialog progressDialog;
+        String errorString = null;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-            Log.d(TAG, "onPreExecute");
+            progressDialog = ProgressDialog.show(AnnouncementActivity.this,
+                    "Please Wait", null, true, true);
         }
 
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Log.d(TAG, "onPostExecute, " + result);
 
-// 배열들 초기화
-            titleList.clear();
-            seqList.clear();
+            progressDialog.dismiss();
+            mTextViewResult.setText(result);
+            Log.d(TAG, "response  - " + result);
 
-            try {
+            if (result == null){
 
-// 결과물이 JSONArray 형태로 넘어오기 때문에 파싱
-                JSONArray jsonArray = new JSONArray(result);
-
-                for(int i=0;i<jsonArray.length();i++){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                    String title = jsonObject.optString("title");
-                    String seq = jsonObject.optString("seq");
-
-// title, seq 값을 변수로 받아서 배열에 추가
-                    titleList.add(title);
-                    seqList.add(seq);
-
-                }
-
-// ListView 에서 사용할 arrayAdapter를 생성하고, ListView 와 연결
-                ArrayAdapter arrayAdapter = new ArrayAdapter<String>(AnnouncementActivity.this,
-                        android.R.layout.simple_list_item_1, titleList);
-                listView.setAdapter(arrayAdapter);
-
-// arrayAdapter의 데이터가 변경되었을때 새로고침
-                arrayAdapter.notifyDataSetChanged();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+                mTextViewResult.setText(errorString);
             }
+            else {
 
-
+                mJsonString = result;
+                showResult();
+            }
         }
-
 
         @Override
         protected String doInBackground(String... params) {
-//
-// String userid = params[0];
-// String passwd = params[1];
 
-            String server_url = "http://15.164.252.136/load_board.php";  //수정 필요
+            String serverURL = params[0];
 
 
-            URL url;
-            String response = "";
             try {
-                url = new URL(server_url);
 
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("userid", "");
-// .appendQueryParameter("passwd", passwd);
-                String query = builder.build().getEncodedQuery();
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
-                writer.flush();
-                writer.close();
-                os.close();
 
-                conn.connect();
-                int responseCode=conn.getResponseCode();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.connect();
 
-                if (responseCode == HttpsURLConnection.HTTP_OK) {
-                    String line;
-                    BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    while ((line=br.readLine()) != null) {
-                        response+=line;
-                    }
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
                 }
-                else {
-                    response="";
-
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
                 }
+
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+
+                bufferedReader.close();
+
+
+                return sb.toString().trim();
+
+
             } catch (Exception e) {
-                e.printStackTrace();
+
+                Log.d(TAG, "InsertData: Error ", e);
+                errorString = e.toString();
+
+                return null;
             }
 
-            return response;
         }
     }
+
+
+    private void showResult(){
+        try {
+            JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+
+            for(int i=0;i<jsonArray.length();i++){
+
+                JSONObject item = jsonArray.getJSONObject(i);
+
+                String title = item.getString(TAG_TITLE);
+                String board_num = item.getString(TAG_BOARD_NUM);
+
+                HashMap<String,String> hashMap = new HashMap<>();
+
+                hashMap.put(TAG_TITLE, title);
+                hashMap.put(TAG_BOARD_NUM, board_num);
+
+                annList.add(hashMap);
+            }
+
+            ListAdapter adapter = new SimpleAdapter(
+                    AnnouncementActivity.this, annList, R.layout.ann_list_item,
+                    new String[]{TAG_BOARD_NUM,TAG_TITLE},
+                    new int[]{R.id.board_num, R.id.title}
+            );
+            listView.setAdapter(adapter);
+        } catch (JSONException e) {
+
+            Log.d(TAG, "showResult : ", e);
+        }
+
+    }
+
 }
