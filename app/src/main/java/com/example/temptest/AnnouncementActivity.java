@@ -91,9 +91,8 @@ public class AnnouncementActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                int item_postion = listView.getCheckedItemPosition();
                 Intent intent = new Intent(AnnouncementActivity.this, AnnounceDetail.class);
-                intent.putExtra("position",item_postion);
+                intent.putExtra("position",i);
                 startActivity(intent);
             }
         });

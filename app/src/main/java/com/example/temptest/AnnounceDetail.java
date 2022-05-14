@@ -51,7 +51,6 @@ public class AnnounceDetail extends AppCompatActivity {
     LinearLayout comment_layout;
     EditText comment_et;
     Button reg_button;
-
     int board_num;
 
     @Override
@@ -59,7 +58,7 @@ public class AnnounceDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_announce_detail);
         Intent intent = getIntent();
-        board_num = intent.getIntExtra("postion",0);
+        board_num = intent.getIntExtra("position",0);
 
         title_tv = findViewById(R.id.textTitle);
         content_tv = findViewById(R.id.textContent);
@@ -68,6 +67,9 @@ public class AnnounceDetail extends AppCompatActivity {
         comment_layout = findViewById(R.id.layoutComment);
         comment_et = findViewById(R.id.comment_et);
         reg_button = findViewById(R.id.reg_button);
+
+
+        content_tv.setText(board_num+"번 게시글 입니다."+"\n"+"추가 내용은 개발중 입니다.");
     }
     public void clickLoad(View view) {
 
