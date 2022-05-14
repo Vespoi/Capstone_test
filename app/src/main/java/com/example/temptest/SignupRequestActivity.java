@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class SignupRequestActivity extends StringRequest {
     // 서버 URL 설정 (PHP 파일 연동)
-    final static private String URL = "http://10.0.2.2/TestThings/cap_test/Resitest.php";
+    final static private String URL = "http://13.125.205.121/Resitest.php";
 
     private Map<String, String> map;
 

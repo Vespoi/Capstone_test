@@ -52,7 +52,6 @@ public class AnnouncementActivity extends AppCompatActivity {
     private TextView mTextViewResult;
 
     ArrayList<HashMap<String, String>> annList;
-    announce_adapter adapter;
     ListView listView;
 
     String mJsonString;
@@ -86,6 +85,16 @@ public class AnnouncementActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int item_postion = listView.getCheckedItemPosition();
+                Intent intent = new Intent(AnnouncementActivity.this, AnnounceDetail.class);
+                intent.putExtra("position",item_postion);
+                startActivity(intent);
             }
         });
 
