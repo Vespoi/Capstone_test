@@ -48,14 +48,13 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class AnnounceDetail extends AppCompatActivity {
     private static String TAG = "phptest_AnnouncementDetailActivity";
-    private static final String TAG_JSON="webnautes";
+    private static final String TAG_JSON="phptest";
     private static final String TAG_TITLE = "title";
     private static final String TAG_CONTENT = "content";
     private static final String TAG_DATE = "date";
     String mJsonString;
 
-    ArrayList<HashMap<String, String>> list;
-
+    private TextView mTextViewResult;
     TextView title_tv, content_tv, date_tv;
     LinearLayout comment_layout;
     EditText comment_et;
@@ -73,48 +72,17 @@ public class AnnounceDetail extends AppCompatActivity {
         content_tv = findViewById(R.id.textContent);
         date_tv = findViewById(R.id.textDate);
 
+        mTextViewResult = (TextView)findViewById(R.id.mTextViewResult);
+
         comment_layout = findViewById(R.id.layoutComment);
         comment_et = findViewById(R.id.comment_et);
         reg_button = findViewById(R.id.reg_button);
 
-
-        content_tv.setText(board_num+"번 게시글 입니다."+"\n"+"추가 내용은 개발중 입니다.");
+       // content_tv.setText(board_num+"번 게시글 입니다."+"\n"+"추가 내용은 개발중 입니다.");
+        GetData task = new GetData();
+        task.execute("http://10.0.2.2/TestThings/cap_test/annLoadDetail.php");
     }
-    /*
-    public void clickLoad(View view) {
 
-        String serverUrl="http://10.0.2.2/TestThings/cap_test/annLoadDetail.php";
-
-        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(Request.Method.POST, serverUrl, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-
-
-                    JSONObject jsonObject = response.getJSONObject(0);
-
-                    String title = jsonObject.getString("title");
-                    String content = jsonObject.getString("content");
-                    String date = jsonObject.getString("date");
-                    title_tv.setText(title);
-                    content_tv.setText(content);
-                    date_tv.setText(date);
-
-                } catch (JSONException e) {e.printStackTrace();}
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AnnounceDetail.this, "ERROR", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        RequestQueue requestQueue= Volley.newRequestQueue(this);
-        requestQueue.add(jsonArrayRequest);
-
-    }
-    */
     private class GetData extends AsyncTask<String, Void, String>{
         ProgressDialog progressDialog;
         String errorString = null;
@@ -125,6 +93,23 @@ public class AnnounceDetail extends AppCompatActivity {
 
             progressDialog = ProgressDialog.show(AnnounceDetail.this,
                     "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            Log.d(TAG, "response  - " + result);
+
+            if (result == null){
+                content_tv.setText(errorString);
+            }
+            else {
+
+                mJsonString = result;
+                showResult();
+            }
         }
 
         @Override
@@ -175,7 +160,7 @@ public class AnnounceDetail extends AppCompatActivity {
 
             } catch (Exception e) {
 
-                Log.d(TAG, "InsertData: Error ", e);
+                Log.d(TAG, "Error ", e);
                 errorString = e.toString();
 
                 return null;
@@ -198,17 +183,11 @@ public class AnnounceDetail extends AppCompatActivity {
                 String content = item.getString(TAG_CONTENT);
                 String date = item.getString(TAG_DATE);
 
-                HashMap<String,String> hashMap = new HashMap<>();
-
-                hashMap.put(TAG_TITLE, title);
-                hashMap.put(TAG_CONTENT, content);
-                hashMap.put(TAG_DATE, date);
-
-                list.add(hashMap);
+                title_tv.setText(title);
+                content_tv.setText(content);
+                date_tv.setText(date);
             }
-            title_tv.setText(list.get(0).toString());
-            content_tv.setText(list.get(1).toString());
-            date_tv.setText(list.get(2).toString());
+
         } catch (JSONException e) {
 
             Log.d(TAG, "showResult : ", e);

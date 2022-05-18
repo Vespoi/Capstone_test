@@ -46,7 +46,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class AnnouncementActivity extends AppCompatActivity {
     private static String TAG = "phptest_AnnouncementActivity";
-    private static final String TAG_JSON="webnautes";
+    private static final String TAG_JSON="phptest";
     private static final String TAG_TITLE = "title";
     private static final String TAG_BOARD_NUM = "board_num";
     private TextView mTextViewResult;
@@ -205,7 +205,7 @@ public class AnnouncementActivity extends AppCompatActivity {
                 hashMap.put(TAG_TITLE, title);
                 hashMap.put(TAG_BOARD_NUM, board_num);
 
-                annList.add(hashMap);
+                    annList.add(hashMap);
             }
 
             ListAdapter adapter = new SimpleAdapter(
