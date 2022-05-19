@@ -1,61 +1,35 @@
 package com.example.temptest;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpResponse;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
-
-public class AnnounceDetail extends AppCompatActivity {
+public class RqDetail extends AppCompatActivity {
     private static String TAG = "phptest_AnnouncementDetailActivity";
     private static final String TAG_JSON="phptest";
-    private static final String TAG_TITLE = "title";
-    private static final String TAG_CONTENT = "content";
+    private static final String TAG_TITLE = "rq_title";
+    private static final String TAG_CONTENT = "rq_content";
     private static final String TAG_DATE = "date";
-    final static private String URL = "http://10.0.2.2/TestThings/cap_test/annLoadDetail.php";
+    final static private String URL = "http://10.0.2.2/TestThings/cap_test/rqLoadDetail.php";
     String mJsonString;
 
     TextView title_tv, content_tv, date_tv;
@@ -68,7 +42,7 @@ public class AnnounceDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_announce_detail);
+        setContentView(R.layout.activity_rq_detail);
 
         Intent intent = getIntent();
         board_position = intent.getIntExtra("position",0);
@@ -82,12 +56,11 @@ public class AnnounceDetail extends AppCompatActivity {
         comment_et = findViewById(R.id.comment_et);
         reg_button = findViewById(R.id.reg_button);
 
-       // content_tv.setText(board_num+"번 게시글 입니다."+"\n"+"추가 내용은 개발중 입니다.");
+        // content_tv.setText(board_num+"번 게시글 입니다."+"\n"+"추가 내용은 개발중 입니다.");
         GetData task = new GetData();
         task.execute(URL,board_num);
     }
-
-    private class GetData extends AsyncTask<String, Void, String>{
+    private class GetData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         String errorString = null;
 
@@ -95,7 +68,7 @@ public class AnnounceDetail extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(AnnounceDetail.this,
+            progressDialog = ProgressDialog.show(RqDetail.this,
                     "Please Wait", null, true, true);
         }
 
@@ -110,6 +83,7 @@ public class AnnounceDetail extends AppCompatActivity {
                 content_tv.setText(errorString);
             }
             else {
+
                 mJsonString = result;
                 showResult();
             }
@@ -148,15 +122,23 @@ public class AnnounceDetail extends AppCompatActivity {
                     inputStream = httpURLConnection.getErrorStream();
                 }
 
+
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
                 StringBuilder sb = new StringBuilder();
                 String line;
+
                 while((line = bufferedReader.readLine()) != null){
                     sb.append(line);
                 }
+
+
                 bufferedReader.close();
+
+
                 return sb.toString().trim();
+
 
             } catch (Exception e) {
 

@@ -14,26 +14,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Temptest"
         android:usesCleartextTraffic="true">
-
-        <!--1-->
+        <activity
+            android:name=".RqDetail"
+            android:exported="false" />
+        <activity
+            android:name=".RqRegister"
+            android:exported="false" />
+        <activity
+            android:name=".CsDetail"
+            android:exported="false" />
+        <activity
+            android:name=".CsRegister"
+            android:exported="false" /> <!-- 1 -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <!--1-->
-
-        <!--2-->
-        <activity android:name=".SignupActivity" />
-        <!--2-->
-
-        <activity
-            android:name=".CommentActivity"
-            android:exported="false" />
+        <activity android:name=".LoginActivity" /> <!-- 1 -->
+        <!-- 2 -->
+        <activity android:name=".SignupActivity" /> <!-- 2 -->
         <activity
             android:name=".AnnounceDetail"
             android:exported="false" />
@@ -58,16 +62,13 @@
         <activity
             android:name=".MyInfoActivity"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="spmvhp2a87" />
-
     </application>
 
 </manifest>

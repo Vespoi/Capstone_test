@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -65,12 +66,11 @@ public class AnnouncementActivity extends AppCompatActivity {
 
         annList = new ArrayList<>();
 
+        GetData task = new GetData();
+        task.execute("http://10.0.2.2/TestThings/cap_test/annLoadBoard.php");
 
         listView = (ListView) findViewById(R.id.announceList);
         Button btnReg = findViewById(R.id.buttonWrite);
-
-        GetData task = new GetData();
-        task.execute("http://10.0.2.2/TestThings/cap_test/annLoadBoard.php");
 
         btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,8 +96,9 @@ public class AnnouncementActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
+
+
     private class GetData extends AsyncTask<String, Void, String>{
         ProgressDialog progressDialog;
         String errorString = null;
@@ -187,7 +188,6 @@ public class AnnouncementActivity extends AppCompatActivity {
         }
     }
 
-
     private void showResult(){
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
@@ -208,12 +208,14 @@ public class AnnouncementActivity extends AppCompatActivity {
                     annList.add(hashMap);
             }
 
-            ListAdapter adapter = new SimpleAdapter(
+            SimpleAdapter adapter = new SimpleAdapter(
                     AnnouncementActivity.this, annList, R.layout.ann_list_item,
                     new String[]{TAG_BOARD_NUM,TAG_TITLE},
                     new int[]{R.id.board_num, R.id.title}
             );
             listView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+
         } catch (JSONException e) {
 
             Log.d(TAG, "showResult : ", e);
