@@ -116,7 +116,9 @@ public class LoginActivity extends AppCompatActivity {
         btn_signup_test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String test_id = "GuestID";
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("id", test_id);
                 startActivity(intent);
             }
         });

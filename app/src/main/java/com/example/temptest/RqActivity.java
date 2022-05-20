@@ -30,8 +30,10 @@ import java.util.HashMap;
 public class RqActivity extends AppCompatActivity {
     private static String TAG = "phptest_Requestctivity";
     private static final String TAG_JSON="phptest";
-    private static final String TAG_TITLE = "title";
-    private static final String TAG_BOARD_NUM = "board_num";
+    private static final String TAG_USERID = "id";
+    private static final String TAG_TITLE = "rq_title";
+    private static final String TAG_BOARD_NUM = "rq_board_num";
+    private static final String TAG_DATE = "date";
     final static private String URL = "http://10.0.2.2/TestThings/cap_test/rqLoadBoard.php";
     private TextView mTextViewResult;
 
@@ -39,6 +41,8 @@ public class RqActivity extends AppCompatActivity {
     ListView listView;
 
     String mJsonString;
+    String id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,9 @@ public class RqActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RqActivity.this, RqRegister.class);
+                Intent getIntent = getIntent();
+                id=getIntent.getStringExtra("id");
+                intent.putExtra("id",id);
                 startActivity(intent);
             }
         });
@@ -76,6 +83,9 @@ public class RqActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(RqActivity.this, RqDetail.class);
+                Intent getIntent = getIntent();
+                id=getIntent.getStringExtra("id");
+                intent.putExtra("id",id);
                 intent.putExtra("position",i);
                 startActivity(intent);
             }
@@ -179,21 +189,25 @@ public class RqActivity extends AppCompatActivity {
 
                 JSONObject item = jsonArray.getJSONObject(i);
 
-                String title = item.getString(TAG_TITLE);
-                String board_num = item.getString(TAG_BOARD_NUM);
+                String id = item.getString(TAG_USERID);
+                String rq_title = item.getString(TAG_TITLE);
+                String rq_board_num = item.getString(TAG_BOARD_NUM);
+                String date = item.getString(TAG_DATE);
 
                 HashMap<String,String> hashMap = new HashMap<>();
 
-                hashMap.put(TAG_TITLE, title);
-                hashMap.put(TAG_BOARD_NUM, board_num);
+                hashMap.put(TAG_USERID, id);
+                hashMap.put(TAG_TITLE, rq_title);
+                hashMap.put(TAG_BOARD_NUM, rq_board_num);
+                hashMap.put(TAG_DATE, date);
 
                 rqList.add(hashMap);
             }
 
             ListAdapter adapter = new SimpleAdapter(
                     RqActivity.this, rqList, R.layout.rq_list_item,
-                    new String[]{TAG_BOARD_NUM,TAG_TITLE},
-                    new int[]{R.id.board_num, R.id.title}
+                    new String[]{TAG_USERID, TAG_BOARD_NUM, TAG_TITLE, TAG_DATE},
+                    new int[]{R.id.writer,R.id.board_num, R.id.title, R.id.date}
             );
             listView.setAdapter(adapter);
         } catch (JSONException e) {

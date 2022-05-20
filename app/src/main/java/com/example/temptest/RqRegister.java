@@ -2,6 +2,7 @@ package com.example.temptest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class RqRegister extends AppCompatActivity {
+    long mNow;
+    Date mDate;
+    SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +40,9 @@ public class RqRegister extends AppCompatActivity {
 
                 String title = title_et.getText().toString();
                 String content = content_et.getText().toString();
+                String date = getTime();
+                Intent intent=getIntent();
+                id = intent.getStringExtra("id");
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -67,11 +78,16 @@ public class RqRegister extends AppCompatActivity {
                     }
                 };
 
-                RqRegRequest rqRegRequest = new RqRegRequest(title, content, responseListener);
+                RqRegRequest rqRegRequest = new RqRegRequest(id, title, content, date, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 queue.add(rqRegRequest);
 
             }
         });
+    }
+    private String getTime(){
+        mNow = System.currentTimeMillis();
+        mDate = new Date(mNow);
+        return mFormat.format(mDate);
     }
 }

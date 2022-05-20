@@ -13,13 +13,15 @@ public class RqRegRequest extends StringRequest {
 
     private Map<String, String> map;
 
-    public RqRegRequest(String rq_title, String rq_content, Response.Listener<String> listener)
+    public RqRegRequest(String id, String rq_title, String rq_content, String date, Response.Listener<String> listener)
     {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
+        map.put("id",id);
         map.put("rq_title", rq_title);
         map.put("rq_content", rq_content);
+        map.put("date",date);
     }
 
     @Override

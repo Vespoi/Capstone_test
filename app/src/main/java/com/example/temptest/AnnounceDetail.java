@@ -58,7 +58,7 @@ public class AnnounceDetail extends AppCompatActivity {
     final static private String URL = "http://10.0.2.2/TestThings/cap_test/annLoadDetail.php";
     String mJsonString;
 
-    TextView title_tv, content_tv, date_tv;
+    TextView  title_tv, content_tv, date_tv;
     LinearLayout comment_layout;
     EditText comment_et;
     Button reg_button;

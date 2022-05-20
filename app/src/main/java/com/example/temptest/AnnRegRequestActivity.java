@@ -13,13 +13,15 @@ public class AnnRegRequestActivity extends StringRequest {
 
     private Map<String, String> map;
 
-    public AnnRegRequestActivity(String title, String content, Response.Listener<String> listener)
+    public AnnRegRequestActivity(String id, String title, String content, String date, Response.Listener<String> listener)
     {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
+        map.put("id",id);
         map.put("title", title);
         map.put("content", content);
+        map.put("date",date);
     }
 
     @Override

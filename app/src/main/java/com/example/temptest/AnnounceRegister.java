@@ -26,10 +26,18 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
 
+
 public class AnnounceRegister extends AppCompatActivity {
+    long mNow;
+    Date mDate;
+    SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +53,9 @@ public class AnnounceRegister extends AppCompatActivity {
 
                 String title = title_et.getText().toString();
                 String content = content_et.getText().toString();
+                String date = getTime();
+                Intent intent=getIntent();
+                id = intent.getStringExtra("id");
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -80,12 +91,17 @@ public class AnnounceRegister extends AppCompatActivity {
                     }
                 };
 
-                AnnRegRequestActivity annRegRequestActivity = new AnnRegRequestActivity(title, content, responseListener);
+                AnnRegRequestActivity annRegRequestActivity = new AnnRegRequestActivity(id, title, content, date, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 queue.add(annRegRequestActivity);
 
             }
         });
+    }
+    private String getTime(){
+        mNow = System.currentTimeMillis();
+        mDate = new Date(mNow);
+        return mFormat.format(mDate);
     }
 }
 

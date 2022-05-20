@@ -48,14 +48,17 @@ import javax.net.ssl.HttpsURLConnection;
 public class AnnouncementActivity extends AppCompatActivity {
     private static String TAG = "phptest_AnnouncementActivity";
     private static final String TAG_JSON="phptest";
+    private static final String TAG_USERID = "id";
     private static final String TAG_TITLE = "title";
     private static final String TAG_BOARD_NUM = "board_num";
+    private static final String TAG_DATE = "date";
     private TextView mTextViewResult;
 
     ArrayList<HashMap<String, String>> annList;
     ListView listView;
 
     String mJsonString;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,9 @@ public class AnnouncementActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AnnouncementActivity.this, AnnounceRegister.class);
+                Intent getIntent = getIntent();
+                id=getIntent.getStringExtra("id");
+                intent.putExtra("id",id);
                 startActivity(intent);
             }
         });
@@ -92,6 +98,9 @@ public class AnnouncementActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(AnnouncementActivity.this, AnnounceDetail.class);
+                Intent getIntent = getIntent();
+                id=getIntent.getStringExtra("id");
+                intent.putExtra("id",id);
                 intent.putExtra("position",i);
                 startActivity(intent);
             }
@@ -135,7 +144,6 @@ public class AnnouncementActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             String serverURL = params[0];
-
 
             try {
 
@@ -197,24 +205,27 @@ public class AnnouncementActivity extends AppCompatActivity {
 
                 JSONObject item = jsonArray.getJSONObject(i);
 
+                String id = item.getString(TAG_USERID);
                 String title = item.getString(TAG_TITLE);
                 String board_num = item.getString(TAG_BOARD_NUM);
+                String date = item.getString(TAG_DATE);
 
                 HashMap<String,String> hashMap = new HashMap<>();
 
+                hashMap.put(TAG_USERID, id);
                 hashMap.put(TAG_TITLE, title);
                 hashMap.put(TAG_BOARD_NUM, board_num);
+                hashMap.put(TAG_DATE, date);
 
                     annList.add(hashMap);
             }
 
             SimpleAdapter adapter = new SimpleAdapter(
                     AnnouncementActivity.this, annList, R.layout.ann_list_item,
-                    new String[]{TAG_BOARD_NUM,TAG_TITLE},
-                    new int[]{R.id.board_num, R.id.title}
+                    new String[]{TAG_USERID, TAG_BOARD_NUM, TAG_TITLE, TAG_DATE},
+                    new int[]{R.id.writer,R.id.board_num, R.id.title, R.id.date}
             );
             listView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
 
         } catch (JSONException e) {
 

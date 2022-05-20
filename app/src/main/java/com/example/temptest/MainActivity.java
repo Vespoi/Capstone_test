@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public static Context context_main;
     public String[] list;
+    private String id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -258,11 +259,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
 
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
         //화면 이동, 데이터 전송
         btnMenuConInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MyInfoActivity.class);
+                intent.putExtra("id",id);
                 startActivity(intent);
             }
         });
@@ -270,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RqActivity.class);
+                intent.putExtra("id",id);
                 startActivity(intent);
             }
         });
@@ -277,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, com.example.temptest.AnnouncementActivity.class);
+                intent.putExtra("id",id);
                 startActivity(intent);
             }
         });
@@ -291,6 +297,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, com.example.temptest.CSActivity.class);
+                intent.putExtra("id",id);
                 startActivity(intent);
             }
         });

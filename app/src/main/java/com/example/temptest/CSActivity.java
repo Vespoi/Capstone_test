@@ -30,15 +30,19 @@ import java.util.HashMap;
 public class CSActivity extends AppCompatActivity {
     private static String TAG = "phptest_CustomerServiceActivity";
     private static final String TAG_JSON="phptest";
-    private static final String TAG_TITLE = "title";
-    private static final String TAG_BOARD_NUM = "board_num";
+    private static final String TAG_USERID = "id";
+    private static final String TAG_TITLE = "cs_title";
+    private static final String TAG_BOARD_NUM = "cs_board_num";
+    private static final String TAG_DATE = "date";
     final static private String URL = "http://10.0.2.2/TestThings/cap_test/csLoadBoard.php";
+    private  SimpleAdapter adapter;
     private TextView mTextViewResult;
 
     ArrayList<HashMap<String, String>> csList;
     ListView listView;
 
     String mJsonString;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,9 @@ public class CSActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CSActivity.this, CsRegister.class);
+                Intent getIntent = getIntent();
+                id=getIntent.getStringExtra("id");
+                intent.putExtra("id",id);
                 startActivity(intent);
             }
         });
@@ -75,6 +82,9 @@ public class CSActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(CSActivity.this, CsDetail.class);
+                Intent getIntent = getIntent();
+                id=getIntent.getStringExtra("id");
+                intent.putExtra("id",id);
                 intent.putExtra("position",i);
                 startActivity(intent);
             }
@@ -108,6 +118,7 @@ public class CSActivity extends AppCompatActivity {
             else {
 
                 mJsonString = result;
+
                 showResult();
             }
         }
@@ -178,24 +189,28 @@ public class CSActivity extends AppCompatActivity {
 
                 JSONObject item = jsonArray.getJSONObject(i);
 
-                String title = item.getString(TAG_TITLE);
-                String board_num = item.getString(TAG_BOARD_NUM);
+                String id = item.getString(TAG_USERID);
+                String cs_title = item.getString(TAG_TITLE);
+                String cs_board_num = item.getString(TAG_BOARD_NUM);
+                String date = item.getString(TAG_DATE);
 
                 HashMap<String,String> hashMap = new HashMap<>();
 
-                hashMap.put(TAG_TITLE, title);
-                hashMap.put(TAG_BOARD_NUM, board_num);
+                hashMap.put(TAG_USERID, id);
+                hashMap.put(TAG_TITLE, cs_title);
+                hashMap.put(TAG_BOARD_NUM, cs_board_num);
+                hashMap.put(TAG_DATE, date);
 
                 csList.add(hashMap);
             }
 
-            SimpleAdapter adapter = new SimpleAdapter(
+            adapter = new SimpleAdapter(
                     CSActivity.this, csList, R.layout.cs_list_item,
-                    new String[]{TAG_BOARD_NUM,TAG_TITLE},
-                    new int[]{R.id.board_num, R.id.title}
+                    new String[]{TAG_USERID, TAG_BOARD_NUM, TAG_TITLE, TAG_DATE},
+                    new int[]{R.id.writer,R.id.board_num, R.id.title, R.id.date}
             );
             listView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+
         } catch (JSONException e) {
 
             Log.d(TAG, "showResult : ", e);
