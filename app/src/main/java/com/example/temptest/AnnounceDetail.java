@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -58,12 +61,11 @@ public class AnnounceDetail extends AppCompatActivity {
     final static private String URL = "http://10.0.2.2/TestThings/cap_test/annLoadDetail.php";
     String mJsonString;
 
-    TextView  title_tv, content_tv, date_tv;
+    TextView title_tv, content_tv, date_tv;
     LinearLayout comment_layout;
     EditText comment_et;
     Button reg_button;
     String board_num;
-    int board_position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +73,7 @@ public class AnnounceDetail extends AppCompatActivity {
         setContentView(R.layout.activity_announce_detail);
 
         Intent intent = getIntent();
-        board_position = intent.getIntExtra("position",0);
-        board_num = ""+board_position;
+        board_num = intent.getStringExtra("position");
 
         title_tv = findViewById(R.id.textTitle);
         content_tv = findViewById(R.id.textContent);
@@ -82,9 +83,43 @@ public class AnnounceDetail extends AppCompatActivity {
         comment_et = findViewById(R.id.comment_et);
         reg_button = findViewById(R.id.reg_button);
 
-       // content_tv.setText(board_num+"번 게시글 입니다."+"\n"+"추가 내용은 개발중 입니다.");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
         GetData task = new GetData();
         task.execute(URL,board_num);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cs, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int curId = item.getItemId();
+        switch(curId) {
+            case R.id.action_change:
+                //intent로 수정 페이지로 이동, 사용자 제목 내용 날짜 글 번호 전달
+                Toast.makeText(this, "개발중 입니다", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AnnounceDetail.this, AnnounceEdit.class);
+                Intent getIntent = getIntent();
+                intent.putExtra("position",board_num);
+                intent.putExtra("title",title_tv.getText());
+                intent.putExtra("content",content_tv.getText());
+                startActivity(intent);
+                break;
+            case R.id.action_delete:
+                //삭제, 확인 취소 선택, 확인 선택시 삭제 진행
+                Toast.makeText(this, "개발중 입니다", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private class GetData extends AsyncTask<String, Void, String>{

@@ -15,6 +15,15 @@
         android:theme="@style/Theme.Temptest"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".RqEdit"
+            android:exported="false" />
+        <activity
+            android:name=".AnnounceEdit"
+            android:exported="false" />
+        <activity
+            android:name=".CsEdit"
+            android:exported="false" />
+        <activity
             android:name=".RqDetail"
             android:exported="false" />
         <activity

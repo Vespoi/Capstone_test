@@ -1,5 +1,6 @@
 package com.example.temptest;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -7,10 +8,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +41,6 @@ public class RqDetail extends AppCompatActivity {
     EditText comment_et;
     Button reg_button;
     String board_num;
-    int board_position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +48,7 @@ public class RqDetail extends AppCompatActivity {
         setContentView(R.layout.activity_rq_detail);
 
         Intent intent = getIntent();
-        board_position = intent.getIntExtra("position",0);
-        board_num = ""+board_position;
+        board_num = intent.getStringExtra("position");
 
         title_tv = findViewById(R.id.textTitle);
         content_tv = findViewById(R.id.textContent);
@@ -56,10 +58,45 @@ public class RqDetail extends AppCompatActivity {
         comment_et = findViewById(R.id.comment_et);
         reg_button = findViewById(R.id.reg_button);
 
-        // content_tv.setText(board_num+"번 게시글 입니다."+"\n"+"추가 내용은 개발중 입니다.");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
         GetData task = new GetData();
         task.execute(URL,board_num);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cs, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int curId = item.getItemId();
+        switch(curId) {
+            case R.id.action_change:
+                //intent로 수정 페이지로 이동, 사용자 제목 내용 날짜 글 번호 전달
+                Toast.makeText(this, "개발중 입니다", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(RqDetail.this, RqEdit.class);
+                Intent getIntent = getIntent();
+                intent.putExtra("position",board_num);
+                intent.putExtra("title",title_tv.getText());
+                intent.putExtra("content",content_tv.getText());
+                startActivity(intent);
+                break;
+            case R.id.action_delete:
+                //삭제, 확인 취소 선택, 확인 선택시 삭제 진행
+                Toast.makeText(this, "개발중 입니다", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private class GetData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         String errorString = null;

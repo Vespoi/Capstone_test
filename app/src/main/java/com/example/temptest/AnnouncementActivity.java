@@ -59,6 +59,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     String mJsonString;
     String id;
+    String board_number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,11 @@ public class AnnouncementActivity extends AppCompatActivity {
                 Intent getIntent = getIntent();
                 id=getIntent.getStringExtra("id");
                 intent.putExtra("id",id);
-                intent.putExtra("position",i);
+                Object temp = (Object)adapterView.getAdapter().getItem(i);
+                board_number = temp.toString();
+                board_number = board_number.substring(37, 38);
+                intent.putExtra("position",board_number);
+               // Toast.makeText(AnnouncementActivity.this, board_number,Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });

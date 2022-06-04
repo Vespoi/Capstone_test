@@ -42,6 +42,7 @@ public class RqActivity extends AppCompatActivity {
 
     String mJsonString;
     String id;
+    String board_number;
 
 
     @Override
@@ -86,7 +87,10 @@ public class RqActivity extends AppCompatActivity {
                 Intent getIntent = getIntent();
                 id=getIntent.getStringExtra("id");
                 intent.putExtra("id",id);
-                intent.putExtra("position",i);
+                Object temp = (Object)adapterView.getAdapter().getItem(i);
+                board_number = temp.toString();
+                board_number = board_number.substring(40, 41);
+                intent.putExtra("position",board_number);
                 startActivity(intent);
             }
         });

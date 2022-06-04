@@ -1,5 +1,6 @@
 package com.example.temptest;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -7,10 +8,17 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +45,6 @@ public class CsDetail extends AppCompatActivity {
     EditText comment_et;
     Button reg_button;
     String board_num;
-    int board_position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +52,7 @@ public class CsDetail extends AppCompatActivity {
         setContentView(R.layout.activity_cs_detail);
 
         Intent intent = getIntent();
-        board_position = intent.getIntExtra("position",0);
-        board_num = ""+board_position;
+        board_num = intent.getStringExtra("position");
 
         title_tv = findViewById(R.id.textTitle);
         content_tv = findViewById(R.id.textContent);
@@ -57,8 +63,82 @@ public class CsDetail extends AppCompatActivity {
         reg_button = findViewById(R.id.reg_button);
 
         // content_tv.setText(board_num+"번 게시글 입니다."+"\n"+"추가 내용은 개발중 입니다.");
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
         GetData task = new GetData();
         task.execute(URL,board_num);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cs, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int curId = item.getItemId();
+        switch(curId) {
+            case R.id.action_change:
+                //intent로 수정 페이지로 이동, 사용자 제목 내용 날짜 글 번호 전달
+                Toast.makeText(this, "개발중 입니다", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CsDetail.this, CsEdit.class);
+                Intent getIntent = getIntent();
+                intent.putExtra("position",board_num);
+                intent.putExtra("title",title_tv.getText());
+                intent.putExtra("content",content_tv.getText());
+                startActivity(intent);
+                break;
+            case R.id.action_delete:
+                //삭제, 확인 취소 선택, 확인 선택시 삭제 진행
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try
+                        {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+
+                            if (success)
+                            {
+                                Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+
+                            else
+                            {
+                                Toast.makeText(getApplicationContext(), "실패", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+
+                        catch(JSONException e)
+                        {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "예외 1", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                CsRmv_Request csRmv_Request = new CsRmv_Request(board_num, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                queue.add(csRmv_Request);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private class GetData extends AsyncTask<String, Void, String> {
