@@ -8,17 +8,17 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CsRmv_Request extends StringRequest {
-    final static private String URL = "http://10.0.2.2/TestThings/cap_test/csRmv.php";
+public class AnnounceRmv_Request extends StringRequest {
+    final static private String URL = "http://10.0.2.2/TestThings/cap_test/annRmv.php";
 
     private Map<String, String> map;
 
-    public CsRmv_Request(String cs_board_num, Response.Listener<String> listener)
+    public AnnounceRmv_Request(String board_num, Response.Listener<String> listener)
     {
         super(Request.Method.POST, URL, listener, null);
 
         map = new HashMap<>();
-        map.put("cs_board_num",cs_board_num);
+        map.put("board_num",board_num);
     }
 
     @Override

@@ -34,9 +34,11 @@ import java.net.URL;
 public class CsDetail extends AppCompatActivity {
     private static String TAG = "phptest_AnnouncementDetailActivity";
     private static final String TAG_JSON="phptest";
+    private static final String TAG_USERID = "id";
     private static final String TAG_TITLE = "cs_title";
     private static final String TAG_CONTENT = "cs_content";
     private static final String TAG_DATE = "date";
+    private static final String TAG_COMMENT_CONTENT = "comment_content";
     final static private String URL = "http://10.0.2.2/TestThings/cap_test/csLoadDetail.php";
     String mJsonString;
 
@@ -61,6 +63,8 @@ public class CsDetail extends AppCompatActivity {
         comment_layout = findViewById(R.id.layoutComment);
         comment_et = findViewById(R.id.comment_et);
         reg_button = findViewById(R.id.reg_button);
+
+
 
         // content_tv.setText(board_num+"번 게시글 입니다."+"\n"+"추가 내용은 개발중 입니다.");
 
@@ -88,7 +92,6 @@ public class CsDetail extends AppCompatActivity {
                 //intent로 수정 페이지로 이동, 사용자 제목 내용 날짜 글 번호 전달
                 Toast.makeText(this, "개발중 입니다", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(CsDetail.this, CsEdit.class);
-                Intent getIntent = getIntent();
                 intent.putExtra("position",board_num);
                 intent.putExtra("title",title_tv.getText());
                 intent.putExtra("content",content_tv.getText());

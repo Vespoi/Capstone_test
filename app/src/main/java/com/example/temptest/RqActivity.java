@@ -71,12 +71,23 @@ public class RqActivity extends AppCompatActivity {
             }
         });
 
-        Button btnCloseAn = findViewById(R.id.buttonCloseRq);
-        btnCloseAn.setOnClickListener(new View.OnClickListener() {
+        Button btnCloseRq = findViewById(R.id.buttonCloseRq);
+        btnCloseRq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 finish();
+            }
+        });
+        Button btnRefresh = findViewById(R.id.refresh);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();//인텐트 종료
+                overridePendingTransition(0, 0);//인텐트 효과 없애기
+                Intent intent = getIntent(); //인텐트
+                startActivity(intent); //액티비티 열기
+                overridePendingTransition(0, 0);//인텐트 효과 없애기
             }
         });
 

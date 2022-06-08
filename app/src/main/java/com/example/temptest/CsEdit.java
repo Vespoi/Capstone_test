@@ -81,6 +81,8 @@ public class CsEdit extends AppCompatActivity {
                 CsEditRequest csEditRequest = new CsEditRequest(board_num, cs_title, cs_content, date, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 queue.add(csEditRequest);
+
+                finish();
             }
         });
     }

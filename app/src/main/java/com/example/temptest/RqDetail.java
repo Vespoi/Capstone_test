@@ -16,6 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,7 +93,44 @@ public class RqDetail extends AppCompatActivity {
                 break;
             case R.id.action_delete:
                 //삭제, 확인 취소 선택, 확인 선택시 삭제 진행
-                Toast.makeText(this, "개발중 입니다", Toast.LENGTH_SHORT).show();
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try
+                        {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+
+                            if (success)
+                            {
+                                Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+
+                            else
+                            {
+                                Toast.makeText(getApplicationContext(), "실패", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+
+                        catch(JSONException e)
+                        {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "예외 1", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                RqRmv_Request rqRmv_Request = new RqRmv_Request(board_num, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                queue.add(rqRmv_Request);
                 break;
             default:
                 break;

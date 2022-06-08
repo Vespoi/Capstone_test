@@ -81,6 +81,8 @@ public class AnnounceEdit extends AppCompatActivity {
                 AnnounceEditRequest annEditRequest = new AnnounceEditRequest(board_num, title, content, date, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 queue.add(annEditRequest);
+
+                finish();
             }
         });
     }

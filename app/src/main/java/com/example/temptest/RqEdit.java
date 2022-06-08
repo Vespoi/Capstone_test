@@ -80,6 +80,8 @@ public class RqEdit extends AppCompatActivity {
                 RqEditRequest rqEditRequest = new RqEditRequest(board_num, rq_title, rq_content, date, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 queue.add(rqEditRequest);
+
+                finish();
             }
         });
     }
