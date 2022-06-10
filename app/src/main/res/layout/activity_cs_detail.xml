@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -25,17 +26,16 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:text="제목"/>
+                    android:text="제목" />
 
                 <TextView
                     android:id="@+id/textTitle"
-                    android:padding="16dp"
-                    android:background="#eeeeee"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="제목"
-                    />
+                    android:background="#eeeeee"
+                    android:padding="16dp"
+                    android:text="제목" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,24 +73,42 @@
                 android:text="내용"
                 />
 
-            <TextView
-                android:padding="16dp"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="댓글"
-                />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:padding="16dp"
+                    android:text="댓글" />
+
+                <Button
+                    android:id="@+id/buttonCommentRefresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="16dp"
+                    android:background="@android:drawable/ic_menu_rotate"
+                    app:backgroundTint="@color/black" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layoutComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
-                <ListView
-                    android:id="@+id/comment"
+                <TextView
+                    android:id="@+id/phpTestText"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:visibility="gone" />
 
             </LinearLayout>
         </LinearLayout>

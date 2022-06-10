@@ -38,25 +38,6 @@
                 android:padding="5dp"
                 android:background="#ffffff"/>
 
-            <Button
-                android:id="@+id/buttonCommentEdit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@android:drawable/ic_menu_edit"
-                android:padding="5dp"
-                app:backgroundTint="#ffffff" />
-
-            <Button
-                android:id="@+id/buttonCommentDelete"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:background="@android:drawable/ic_menu_delete"
-                app:backgroundTint="#ffffff"/>
         </LinearLayout>
 
         <LinearLayout
@@ -65,7 +46,7 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <TextView
+            <EditText
                 android:id="@+id/commentContent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -73,6 +54,24 @@
                 android:layout_weight="4"
                 android:padding="5dp"
                 android:background="#ffffff"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonCommentEditDone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:text="완료"
+                android:backgroundTint="#ffffff"
+                android:textColor="@color/black"/>
         </LinearLayout>
     </LinearLayout>
 

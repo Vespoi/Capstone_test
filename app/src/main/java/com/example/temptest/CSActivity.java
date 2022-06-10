@@ -130,13 +130,10 @@ public class CSActivity extends AppCompatActivity {
             Log.d(TAG, "response  - " + result);
 
             if (result == null){
-
                 mTextViewResult.setText(errorString);
             }
             else {
-
                 mJsonString = result;
-
                 showResult();
             }
         }
