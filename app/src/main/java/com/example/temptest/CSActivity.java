@@ -101,7 +101,7 @@ public class CSActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(CSActivity.this, CsDetail.class);
-                Intent getIntent = getIntent();
+                intent.putExtra("id",id);
                 Object temp = (Object)adapterView.getAdapter().getItem(i);
                 board_number = temp.toString();
                 board_number = board_number.substring(40, 41);
