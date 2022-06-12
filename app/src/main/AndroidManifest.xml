@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Temptest"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DetailsList"
+            android:exported="false" />
+        <activity
             android:name=".CommentEdit"
             android:exported="false" />
         <activity

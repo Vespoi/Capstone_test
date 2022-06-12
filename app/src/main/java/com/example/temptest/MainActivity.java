@@ -160,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Button btnMenuConAn = (Button) findViewById(R.id.buttonMenuContentAnnouncement);
         Button btnMenuConSet = (Button) findViewById(R.id.buttonMenuContentSettings);
         Button btnMenuConCs = (Button) findViewById(R.id.buttonMenuContentCS);
+        Button btnMenuConDt = (Button) findViewById(R.id.buttonMenuContentDt);
         Button btnMenuConClose = (Button) findViewById(R.id.buttonMenuContentClose);
 
         //마커 세부정보 버튼들
@@ -214,6 +215,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         });
+
+        //세부정보 리스트 권한 어쩌구
+        if(authority.equals(AUTHORITY_USER)){
+            btnMenuConDt.setVisibility(View.GONE);
+        }
+        if(authority.equals(AUTHORITY_ADMIN) || authority.equals(AUTHORITY_SUPER_ADMIN) ){
+            btnMenuConDt.setVisibility(View.VISIBLE);
+        }
 
         //메뉴표시
         btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -355,6 +364,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Intent intent = new Intent(MainActivity.this, com.example.temptest.CSActivity.class);
                 intent.putExtra("authority", authority);
                 intent.putExtra("id",id);
+                startActivity(intent);
+            }
+        });
+        btnMenuConDt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, com.example.temptest.DetailsList.class);
                 startActivity(intent);
             }
         });
