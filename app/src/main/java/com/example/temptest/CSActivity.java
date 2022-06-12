@@ -38,6 +38,10 @@ public class CSActivity extends AppCompatActivity {
     final static private String URL = "http://10.0.2.2/TestThings/cap_test/csLoadBoard.php";
     private  SimpleAdapter adapter;
     private TextView mTextViewResult;
+    private String authority;
+    private String AUTHORITY_USER = "user";
+    private String AUTHORITY_ADMIN = "admin";
+    private String AUTHORITY_SUPER_ADMIN = "super_admin";
 
     ArrayList<HashMap<String, String>> csList;
     ListView listView;
@@ -50,6 +54,10 @@ public class CSActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_csactivity);
+
+        Intent getIntent = getIntent();
+        id=getIntent.getStringExtra("id");
+        authority = getIntent.getStringExtra("authority");
 
         mTextViewResult = (TextView)findViewById(R.id.phpTestText);
 
@@ -65,8 +73,6 @@ public class CSActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CSActivity.this, CsRegister.class);
-                Intent getIntent = getIntent();
-                id=getIntent.getStringExtra("id");
                 intent.putExtra("id",id);
                 startActivity(intent);
             }
@@ -96,8 +102,6 @@ public class CSActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(CSActivity.this, CsDetail.class);
                 Intent getIntent = getIntent();
-                id=getIntent.getStringExtra("id");
-                intent.putExtra("id",id);
                 Object temp = (Object)adapterView.getAdapter().getItem(i);
                 board_number = temp.toString();
                 board_number = board_number.substring(40, 41);

@@ -54,6 +54,11 @@ public class AnnouncementActivity extends AppCompatActivity {
     private static final String TAG_DATE = "date";
     private TextView mTextViewResult;
 
+    private String authority;
+    private String AUTHORITY_USER = "user";
+    private String AUTHORITY_ADMIN = "admin";
+    private String AUTHORITY_SUPER_ADMIN = "super_admin";
+
     ArrayList<HashMap<String, String>> annList;
     ListView listView;
 
@@ -70,6 +75,10 @@ public class AnnouncementActivity extends AppCompatActivity {
 
         annList = new ArrayList<>();
 
+        Intent getIntent = getIntent();
+        id=getIntent.getStringExtra("id");
+        authority = getIntent.getStringExtra("authority");
+
         GetData task = new GetData();
         task.execute("http://10.0.2.2/TestThings/cap_test/annLoadBoard.php");
 
@@ -79,11 +88,14 @@ public class AnnouncementActivity extends AppCompatActivity {
         btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AnnouncementActivity.this, AnnounceRegister.class);
-                Intent getIntent = getIntent();
-                id=getIntent.getStringExtra("id");
-                intent.putExtra("id",id);
-                startActivity(intent);
+                if(authority.equals(AUTHORITY_USER)){
+                    Toast.makeText(AnnouncementActivity.this,"권한이 없습니다.",Toast.LENGTH_SHORT).show();
+                }
+                if(authority.equals(AUTHORITY_ADMIN) || authority.equals(AUTHORITY_SUPER_ADMIN)) {
+                    Intent intent = new Intent(AnnouncementActivity.this, AnnounceRegister.class);
+                    intent.putExtra("id", id);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -110,8 +122,6 @@ public class AnnouncementActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(AnnouncementActivity.this, AnnounceDetail.class);
-                Intent getIntent = getIntent();
-                id=getIntent.getStringExtra("id");
                 intent.putExtra("id",id);
                 Object temp = (Object)adapterView.getAdapter().getItem(i);
                 board_number = temp.toString();

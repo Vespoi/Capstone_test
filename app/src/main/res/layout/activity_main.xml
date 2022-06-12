@@ -153,7 +153,7 @@
                         android:text="세부정보" />
 
                     <Button
-                        android:id="@+id/button3"
+                        android:id="@+id/buttonCompression1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="압축" />
@@ -207,7 +207,7 @@
                         android:text="세부정보" />
 
                     <Button
-                        android:id="@+id/button7"
+                        android:id="@+id/buttonCompression2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="압축" />
@@ -260,7 +260,7 @@
                         android:text="세부정보" />
 
                     <Button
-                        android:id="@+id/button4"
+                        android:id="@+id/buttonCompression3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="압축" />

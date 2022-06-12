@@ -36,6 +36,10 @@ public class RqActivity extends AppCompatActivity {
     private static final String TAG_DATE = "date";
     final static private String URL = "http://10.0.2.2/TestThings/cap_test/rqLoadBoard.php";
     private TextView mTextViewResult;
+    private String authority;
+    private String AUTHORITY_USER = "user";
+    private String AUTHORITY_ADMIN = "admin";
+    private String AUTHORITY_SUPER_ADMIN = "super_admin";
 
     ArrayList<HashMap<String, String>> rqList;
     ListView listView;
@@ -49,6 +53,10 @@ public class RqActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rq);
+
+        Intent getIntent = getIntent();
+        id=getIntent.getStringExtra("id");
+        authority = getIntent.getStringExtra("authority");
 
         mTextViewResult = (TextView)findViewById(R.id.phpTestText);
 
@@ -64,8 +72,6 @@ public class RqActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RqActivity.this, RqRegister.class);
-                Intent getIntent = getIntent();
-                id=getIntent.getStringExtra("id");
                 intent.putExtra("id",id);
                 startActivity(intent);
             }
@@ -95,8 +101,6 @@ public class RqActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(RqActivity.this, RqDetail.class);
-                Intent getIntent = getIntent();
-                id=getIntent.getStringExtra("id");
                 intent.putExtra("id",id);
                 Object temp = (Object)adapterView.getAdapter().getItem(i);
                 board_number = temp.toString();

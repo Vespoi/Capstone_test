@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +36,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static Context context_main;
     public String[] list;
     private String id;
+    private String authority;
+    private String AUTHORITY_USER = "user";
+    private String AUTHORITY_ADMIN = "admin";
+    private String AUTHORITY_SUPER_ADMIN = "super_admin";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             fm.beginTransaction().add(R.id.map_view, mapFragment).commit();
         }
         mapFragment.getMapAsync(this);
+
 
     }
 
@@ -133,6 +139,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return true;
         });
 
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
+        authority = intent.getStringExtra("authority");
+
         //메뉴 화면
         View menuView;
         menuView = findViewById(R.id.menuView);
@@ -157,6 +167,53 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Button btnDt2=(Button) findViewById(R.id.binDetails2);
         Button btnDt3=(Button) findViewById(R.id.binDetails3);
 
+        Button btnComp1 = (Button) findViewById(R.id.buttonCompression1);
+        Button btnComp2 = (Button) findViewById(R.id.buttonCompression2);
+        Button btnComp3 = (Button) findViewById(R.id.buttonCompression3);
+
+        //압축기능 권한별 메세지 출력 테스트
+        btnComp1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(authority.equals(AUTHORITY_USER)) {
+                    Toast.makeText(MainActivity.this, "권한이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+                if(authority.equals(AUTHORITY_ADMIN)) {
+                    Toast.makeText(MainActivity.this, "권한이 있습니다.", Toast.LENGTH_SHORT).show();
+                }
+                if(authority.equals(AUTHORITY_SUPER_ADMIN)) {
+                    Toast.makeText(MainActivity.this, "권한이 있습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        btnComp2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(authority.equals(AUTHORITY_USER)) {
+                    Toast.makeText(MainActivity.this, "권한이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+                if(authority.equals(AUTHORITY_ADMIN)) {
+                    Toast.makeText(MainActivity.this, "권한이 있습니다.", Toast.LENGTH_SHORT).show();
+                }
+                if(authority.equals(AUTHORITY_SUPER_ADMIN)) {
+                    Toast.makeText(MainActivity.this, "권한이 있습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        btnComp3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(authority.equals(AUTHORITY_USER)) {
+                    Toast.makeText(MainActivity.this, "권한이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+                if(authority.equals(AUTHORITY_ADMIN)) {
+                    Toast.makeText(MainActivity.this, "권한이 있습니다.", Toast.LENGTH_SHORT).show();
+                }
+                if(authority.equals(AUTHORITY_SUPER_ADMIN)) {
+                    Toast.makeText(MainActivity.this, "권한이 있습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         //메뉴표시
         btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -258,9 +315,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-
-        Intent intent = getIntent();
-        id = intent.getStringExtra("id");
         //화면 이동, 데이터 전송
         btnMenuConInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,6 +328,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RqActivity.class);
+                intent.putExtra("authority", authority);
                 intent.putExtra("id",id);
                 startActivity(intent);
             }
@@ -282,6 +337,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, com.example.temptest.AnnouncementActivity.class);
+                intent.putExtra("authority", authority);
                 intent.putExtra("id",id);
                 startActivity(intent);
             }
@@ -297,6 +353,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, com.example.temptest.CSActivity.class);
+                intent.putExtra("authority", authority);
                 intent.putExtra("id",id);
                 startActivity(intent);
             }
